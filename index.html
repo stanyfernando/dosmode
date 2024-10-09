@@ -221,7 +221,8 @@ document.addEventListener("contextmenu", function(e){
         const loadingMessages = [
             "ESTABLISHING ENCRYPTED CHANNEL.",
             "SECURE LINK ESTABLISHED..",
-            "LOADING USER INTERFACE...",
+            "PREPARING USER INTERFACE...",
+            "LOADING COMPLETE....",
         ];
 
         let currentMessageIndex = 0;
@@ -239,7 +240,7 @@ document.addEventListener("contextmenu", function(e){
                 width++;
                 loadingBar.style.width = width + '%';
 
-                if (width % 42 === 0 && currentMessageIndex < loadingMessages.length - 1) {
+                if (width % 35 === 0 && currentMessageIndex < loadingMessages.length - 1) {
                     currentMessageIndex++;
                     loadingText.innerHTML = loadingMessages[currentMessageIndex]; // Update loading text
                 }

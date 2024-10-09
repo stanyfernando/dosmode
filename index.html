@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Stany Fernando">
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAPwr/ACbrDAAA6v8A8pIMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMzMzAAIDMzMzMzBAAiAzMzMzBEACIgMzMzBEQAIiIDMzBERAAiIiAzBEREACIiIgBEREQAIiIiAERERAAiIiARBEREACIiAREQREQAIiAREREERAAiARERERBEACAREREREQQAAREREREREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon">
+    <meta property="og:description" content="writer, photographer and filmmaker">
+    <meta property="og:image" content="https://i.ibb.co/59qyGrT/sffff.jpg">
+    <meta property="og:url" content="https://stanyfernando.blog">
+    <title>STANY'S DOS BOX</title>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/perfect-dos-vga-437?styles=9000');
+    </style>     
+    <style>
+        body {
+            font-family: 'Perfect DOS VGA 437', sans-serif;
+            background-color: black;
+            color: lime;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #outer-container {
+            border: 3px solid lime;
+            padding: 10px;
+            max-width: 620px;
+            width: 90%;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        #terminal {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #output-container {
+            flex: 1 1 auto;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: black;
+            border: 1px solid lime;
+            overflow-y: auto;
+            font-size: 1rem;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: pre-wrap;
+        }
+
+        #output {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            padding: 10px;
+            background-color: transparent;
+            box-sizing: border-box;
+            position: relative; 
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            #output {
+                max-height: 650px;
+                font-size: 14px;
+            }
+        }
+
+        #input-container {
+            flex: 0 0 auto;
+            height: 40px;
+            box-sizing: border-box;
+            background-color: black;
+            border: 1px solid lime;
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+
+        #command {
+            width: 100%;
+            border: none;
+            background-color: black;
+            color: lime;
+            font-family: 'Perfect DOS VGA 437', sans-serif;
+            outline: none;
+            font-size: 1rem;
+            padding: 5px;
+            margin: 0;
+        }
+
+        #command::placeholder {
+            color: lime;
+        }
+
+        .typewriter {
+            white-space: pre-wrap;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        #console-commands {
+            border: 1px solid red;
+            color: red;
+            padding: 10px;
+            max-width: 620px;
+            width: 90%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+            height: auto;
+            overflow: auto;
+        }
+
+        #console-commands div {
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .bullet {
+            color: red;
+        }
+
+        /* Loading bar styles */
+        #loading-bar-container {
+            width: 100%;
+            height: 20px;
+            border: 0px solid lime;
+            margin-bottom: 25px;
+        }
+
+        #loading-bar {
+            height: 100%;
+            width: 0;
+            background-color: lime;
+        }
+
+        #loading-text {
+            margin-top: 15px;
+            text-align: center;
+            color: lime;
+        }
+    </style>
+</head>
+<body>
+    <div id="outer-container">
+        <div id="terminal">
+            <div id="output-container">
+                <div id="output" class="typewriter">
+                    <div id="loading-bar-container">
+                        <div id="loading-bar"></div>
+                    </div>
+                    <div id="loading-text">Initializing...</div>
+                </div>
+            </div>
+            <div id="input-container">
+                <input type="text" id="command" placeholder="Enter query here..." autofocus>
+            </div>
+        </div>
+    </div>
+
+    <div id="console-commands">
+        <div><u>Console Commands:</u></div>
+        <div class="bullet"><strong>> go back</strong></div>
+        <div class="bullet"><strong>> reset</strong></div>
+    </div>
+    <footer style="text-align: center; color: lime; margin-top: 06px;">
+        1995 (c) Open Sesame INC.<br>Made by Stany Fernando.
+    </footer>
+
+    <script>
+    const commandInput = document.getElementById('command');
+    const outputDiv = document.getElementById('output');
+    const loadingBarContainer = document.getElementById('loading-bar-container');
+    const loadingBar = document.getElementById('loading-bar');
+    const loadingText = document.getElementById('loading-text');
+    let userName = '';
+    let isPromptDisplayed = false;
+
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+  }, false);
+
+  document.onkeydown = function(e) {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+      return false;
+    }
+  }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Show loading bar first
+        showLoadingBar(() => {
+            typeWriterEffect("Greetings stranger!,\n\nwhat is your name?", false, false);
+        });
+    });
+
+    commandInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const command = commandInput.value.trim();
+            handleCommand(command);
+            commandInput.value = '';
+        }
+    });
+
+    function showLoadingBar(callback) {
+        commandInput.disabled = true; // Disable input while loading
+        loadingBarContainer.style.display = 'block'; // Show loading bar
+
+        const loadingMessages = [
+            "ESTABLISHING ENCRYPTED CHANNEL.",
+            "SECURE LINK ESTABLISHED..",
+            "LOADING USER INTERFACE...",
+        ];
+
+        let currentMessageIndex = 0;
+        loadingText.innerHTML = loadingMessages[currentMessageIndex]; // Set the first loading text
+
+        let width = 0;
+        const interval = setInterval(function() {
+            if (width >= 125) {
+                clearInterval(interval);
+                loadingBarContainer.style.display = 'none'; // Hide loading bar
+                loadingText.style.display = 'none'; // Hide loading text
+                commandInput.disabled = false; // Re-enable input after loading
+                callback(); // Call the next function (greeting message)
+            } else {
+                width++;
+                loadingBar.style.width = width + '%';
+
+                if (width % 42 === 0 && currentMessageIndex < loadingMessages.length - 1) {
+                    currentMessageIndex++;
+                    loadingText.innerHTML = loadingMessages[currentMessageIndex]; // Update loading text
+                }
+            }
+        }, 65); // Adjust speed of loading bar (smaller number for faster)
+    }
+
+    const prompts = [
+        { name: "a", url: "https://gentlemanslip.com" },
+        { name: "b", url: "https://ravencaws.co" },
+        { name: "c", url: "https://avatarstany.xyz" },
+        { name: "d", url: "https://open.spotify.com/playlist/6F27OlLTdhliA8AHH5oRy3?si=2fa54cd6528a45f7" },
+        { name: "e", url: "mailto:stanyfernando@yahoo.com" },
+        { name: "Open The Pod Bay Doors", response: `I'm sorry, [userName]. I'm afraid I can't do that.` },
+        { name: "Special Order 937", response: `PRIORITY ONE\nENSURE RETURN OF ORGANISM FOR ANALYSIS.\nALL OTHER CONSIDERATIONS SECONDARY.\n\nCREW EXPENDABLE.` },
+        { name: "Wibbly Wobbly", response: `Timey-Wimey!🕰️` },
+        { name: "Join the Dark Side", response: `We Have Cookies!🍪` },
+        { name: "I'll Be Back!", response: `Hasta la vista, baby!` },
+        { name: "I Want To Believe", response: `THE TRUTH IS OUT THERE` },
+        // Moved recent easter eggs below the old ones
+        { name: "Thu'um", response: "Fus Ro Dah! 🐲" },
+        { name: "Tell Me A Story", response: "I used to be an adventurer like you, then I took an arrow in the knee. 🏹" },
+        { name: "Crowbar", response: "λ" }
+    ];
+
+    function handleCommand(command) {
+        if (command.toLowerCase() !== 'go back') {
+            outputDiv.innerHTML = ''; // Clear output for new commands
+        }
+
+        const normalizedCommand = command
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s]/g, '');
+
+        if (!userName) {
+            userName = command;
+            const introText = `Hello ${userName}!\n\nI'm Stany, a writer, photographer, hopeless poet, and video game enthusiast. To select an option, type the corresponding letter from the list below.\n\na - gentlemanslip\nb - ravencaws\nc - avatarstany\nd - playlist 2024\ne - contact\n`;
+            typeWriterEffect(introText, false, false);
+            isPromptDisplayed = true;
+        } else if (normalizedCommand === 'reset') {
+            outputDiv.innerHTML = '';
+            userName = '';
+            isPromptDisplayed = false;
+            typeWriterEffect("Greetings stranger!,\n\nwhat is your name?", false, false);
+        } else if (normalizedCommand === 'go back') {
+            if (isPromptDisplayed) {
+                outputDiv.innerHTML = '';
+                const goBackIntroText = `Hello ${userName}!\n\nI'm Stany, a writer, photographer, hopeless poet, and video game enthusiast. To select an option, type the corresponding letter from the list below or you could type 'open sesame' and see what awaits you...:\n\na - gentlemanslip\nb - ravencaws\nc - avatarstany\nd - playlist 2024\ne - contact\n`;
+                typeWriterEffect(goBackIntroText, false, false);
+            }
+        } else if (normalizedCommand === 'open sesame') {
+            const easterEggsList = prompts
+                .filter(p => p.response)
+                .map(p => `+ ${p.name}`)
+                .join('\n');
+            typeWriterEffect(`Type or paste one of these lines to see what happens:\n\n${easterEggsList}`, false, false);
+        } else if (['thu\'um', 'thuum', 'thu', 'thuum', 'thum'].includes(normalizedCommand)) {
+            const prompt = prompts.find(p => p.name === 'Thu\'um');
+            if (prompt) {
+                typeWriterEffect(prompt.response, false, false);
+            } else {
+                typeWriterEffect(`Prompt unavailable: Thu'um`, false, false);
+            }
+        } else if (normalizedCommand === 'tell me a story') {
+            const prompt = prompts.find(p => p.name === 'Tell Me A Story');
+            if (prompt) {
+                typeWriterEffect(prompt.response, false, false);
+            } else {
+                typeWriterEffect(`Prompt unavailable: Tell me a story`, false, false);
+            }
+        } else if (normalizedCommand === 'crowbar') {
+            const prompt = prompts.find(p => p.name === 'Crowbar');
+            if (prompt) {
+                typeWriterEffect(prompt.response, false, false);
+            } else {
+                typeWriterEffect(`Prompt unavailable: Crowbar`, false, false);
+            }
+        } else {
+            const prompt = prompts.find(p => p.name.toLowerCase() === normalizedCommand);
+            if (prompt) {
+                commandInput.disabled = true;
+                if (prompt.response) {
+                    const response = prompt.response.replace('[userName]', userName);
+                    typeWriterEffect(response, false, false, () => {
+                        commandInput.disabled = false;
+                    });
+                } else {
+                    typeWriterEffect(`Processing query...\nFetching Data...\n\nComplete...✓`, false, true);
+                    setTimeout(() => {
+                        window.open(prompt.url, '_blank');
+                        commandInput.disabled = false;
+                    }, 2500);
+                }
+            } else if (normalizedCommand === 'ill be back') {
+                const terminatorResponse = 'Hasta la vista, baby!';
+                typeWriterEffect(terminatorResponse, false, false);
+            } else {
+                const linkPrompts = prompts
+                    .filter(p => !p.response)
+                    .map(p => `+ ${p.name}`)
+                    .join('\n');
+                typeWriterEffect(`Prompt unavailable: ${command}\n\nTo select an option, type the corresponding letter from the list below:\n\n\na - gentlemanslip\nb - ravencaws\nc - avatarstany\nd - playlist 2024\ne - contact\n`, false, false);
+            }
+        }
+    }
+
+    function typeWriterEffect(text, isPrompt, clearPrevious, callback) {
+        let i = 0;
+        const speed = 25; // Adjusted for slower typing effect
+        let outputText = '';
+        commandInput.disabled = true;
+
+        function type() {
+            if (i < text.length) {
+                outputText += text.charAt(i);
+                outputDiv.innerHTML = outputText; // Display output inside outputDiv
+                i++;
+                setTimeout(type, speed);
+            } else {
+                outputDiv.scrollTop = outputDiv.scrollHeight; // Auto-scroll to bottom
+                if (callback) callback();
+                commandInput.disabled = false;
+            }
+        }
+        type();
+    }
+</script>
+</body>
+</html>

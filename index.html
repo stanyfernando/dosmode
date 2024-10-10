@@ -175,6 +175,7 @@
         <div><u>Console Commands:</u></div>
         <div class="bullet"><strong>> go back</strong></div>
         <div class="bullet"><strong>> reset</strong></div>
+        <div class="bullet"><strong>> about</strong></div>
     </div>
     <footer style="text-align: center; color: lime; margin-top: 06px;">
         1995 (c) Open Sesame INC.<br>Made by Stany Fernando.
@@ -281,6 +282,9 @@ document.addEventListener("contextmenu", function(e){
             const introText = `Hello ${userName}!\n\nI'm Stany, a writer, photographer, hopeless poet, and video game enthusiast. To select an option, type the corresponding letter from the list below.\n\na - gentlemanslip\nb - ravencaws\nc - avatarstany\nd - playlist 2024\ne - contact\n`;
             typeWriterEffect(introText, false, false);
             isPromptDisplayed = true;
+ } else if (normalizedCommand === 'about') {
+            const aboutText = `<center>This space is a tribute to the nostalgia of early computing and the fond memories of the hours spent exploring C++, MS DOS, and JavaScript. Even though I haven't touched any of these languages in ages and consider myself a non-programmer now, I continue to cherish the moments shared with the incredible people who helped me learn and grow. This site honors the creators and teachers who inspired dedication and passion in many of us.\n\nSTANY FERNANDO</center>`;
+            typeWriterEffect(aboutText, false, false);
         } else if (normalizedCommand === 'reset') {
             outputDiv.innerHTML = '';
             userName = '';
@@ -305,6 +309,7 @@ document.addEventListener("contextmenu", function(e){
             } else {
                 typeWriterEffect(`Prompt unavailable: Thu'um`, false, false);
             }
+
         } else if (normalizedCommand === 'tell me a story') {
             const prompt = prompts.find(p => p.name === 'Tell Me A Story');
             if (prompt) {
